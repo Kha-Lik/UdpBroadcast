@@ -33,12 +33,12 @@ namespace UdpBroadcastServer
             _socket.Bind(endpoint);
         }
 
-        public async Task SendMessageAsync(string message)
+        public void SendMessage(string message)
         {
             foreach (var ipEndPoint in _clients)
             {
                 var data = Encoding.Unicode.GetBytes(message);
-                await _socket.SendToAsync(data, SocketFlags.None, ipEndPoint);
+                _socket.SendTo(data, ipEndPoint);
                 Console.WriteLine($"Sent message to client {ipEndPoint.Address}:{ipEndPoint.Port}");
             }
         }

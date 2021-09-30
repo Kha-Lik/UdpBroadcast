@@ -1,16 +1,16 @@
 ﻿using System;
-using System.Threading.Tasks;
 
 namespace UdpBroadcastServer
 {
     static class Program
     {
-        private static Server _server;
-        static async Task Main(string[] args)
+        static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
-            _server = new Server(8844, "127.0.0.1");
-            _server.Init();
+            Console.WriteLine("Enter the port to start on:");
+            var port = int.Parse(Console.ReadLine() ?? "6699");
+            
+            var server = new Server(port, "127.0.0.1");
+            server.Init();
 
             bool flag = true;
             while (flag)
@@ -22,7 +22,9 @@ namespace UdpBroadcastServer
                 switch (input)
                 {
                     case "1":
-                        await SendMessage();
+                        Console.WriteLine("Enter message:\n");
+                        var msg = Console.ReadLine();
+                        server.SendMessage(msg);
                         break;
                     case "2":
                         flag = false;
@@ -32,14 +34,6 @@ namespace UdpBroadcastServer
                         break;
                 }
             }
-        }
-
-        private static async Task SendMessage()
-        {
-            Console.WriteLine("Enter message:\n");
-            var input = Console.ReadLine();
-
-            await _server.SendMessageAsync(input);
         }
     }
 }
